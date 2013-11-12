@@ -6,7 +6,7 @@
 function T = PCSTsubprogram(G, Prize, r)
 r = 292; % root node
 % inputing instances
-       [G,Prize] = inputdata('C02-A.stp');
+ %      [G,Prize] = inputdata('C02-A.stp');
 
 % end
 %     % Read number of nodes and edges

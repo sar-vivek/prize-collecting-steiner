@@ -3,7 +3,7 @@
 %% Prize is vertex penalites, a list of int
 %% Author : Preethi
 
-function T = PCSTMain(G, Prize)
+function T = PCSTMain(Prize)
     r = 292; % root node
     % inputing instances
     G = inputdata('C02-A.stp');
