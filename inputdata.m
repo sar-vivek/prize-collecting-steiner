@@ -1,3 +1,5 @@
+%reads the input file
+%author : Preethi
 function [G,Prize] = inputdata(content)
 content = fileread( 'C02-A.stp' ) ;
  % - Extract graph information.

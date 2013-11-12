@@ -1,6 +1,7 @@
 %% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
+%% Author : Preethi
 
 function T = PCSTMain(G, Prize)
     r = 292; % root node
