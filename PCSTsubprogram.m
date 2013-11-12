@@ -2,6 +2,7 @@
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
+%% Author : Preethi
 function T = PCSTsubprogram(G, Prize, r)
 r = 292; % root node
 % inputing instances
