@@ -23,6 +23,7 @@ while(local_improvement)
             X = nX;
             c = nc;
             local_improvement=1;
+            break;
             % first improvement found so stop and exit
         end
     end
