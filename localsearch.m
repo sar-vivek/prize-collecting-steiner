@@ -3,7 +3,7 @@
 %%G is edge-weight matrix 
 %%Prize is an array denoting penalties (if we skip) or prize (if we visit) of nodes
 %%Requires : compute_cost function : which constructs a tree spanning nodes in X and returns the cost of tree + penalties of not visited nodes.
-%%Author : Vivek Sardeshmukh
+%%Author: Vivek Sardeshmukh
 function X = localsearch(G, Prize, X)
 
 local_improvement = 1;
