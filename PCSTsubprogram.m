@@ -2,76 +2,10 @@
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
-function T = PCSTsubprogram(G, Prize, r)
-%r = 292; % root node
-r=5;
-% inputing instances
-%        [G,Prize] = inputdata('C02-A.stp');
-% SMALL INSTANCE
- G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-     -1 -1 1 -1 -1 1 10 10 1 -1; 
-     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
- 
- Prize = [10 0 0 150 200 0 100 0 0 20];
-
-% end
-%     % Read number of nodes and edges
-%     H = textscan(fileID, '%s %f', 2, 'HeaderLines', 1);
-%     disp(['Number of ' H{1}{1} ':'])
-%     NumberOfNodes = H{2}(1)
-%     disp(['Number of ' H{1}{2} ':'])
-%     NumberOfEdges = H{2}(2)
-%     % Read all remaining lines ("E x x x" lines)
-%     C = textscan(fileID, '%c %f %f %f');
-%    
-%     ArrayOfInitialNodes = C{2}'
-%     ArrayOfFinalNodes   = C{3}'
-%     ArrayOfEdgeWeights  = C{4}'
-%     line1 = fgetl(fileID);
-% res={line1};
-% while ischar(line1)
-%   line1 = fgetl(fileID);
-%   res{end+1} =line1
-% end
-% fclose(fileID);
-% res(end)=[]
-% s2 = regexp(res, ' ', 'split')
-% s3 = size(s2);
-% numPRIZEnodes1 = s2{1,4}{1,2};
-% numPRIZEnodes2=str2num(numPRIZEnodes1);
-% nodes1P=s2{1,5}{1,2};
-% nodes2P = str2num(nodes1P);
-% Prize(NumberOfNodes) = 0;
-% for i = 5: numPRIZEnodes2 + 4
-%     nodenumber = s2{1,i}{1,2};
-%     nodenumber1 =  str2num( nodenumber);
-%     Prize1 = s2{1,i}{1,3};
-%     Prize2 = str2num( Prize1);
-%    Prize(nodenumber1) = Prize2;
-% 
-% end
-% 
-% 
-%     % Close file
-% 
-%     % Create adjacency matrix in sparse format with zeros instead of -1
-%     % (memory efficient if there are lots of zeros)
-%     AdjMatrixSparseWithZeros = ...
-%         sparse(ArrayOfInitialNodes, ArrayOfFinalNodes, ArrayOfEdgeWeights, ...
-%         NumberOfNodes, NumberOfNodes);
-%     AdjMatrixSparseWithZeros = ...
-%         AdjMatrixSparseWithZeros + AdjMatrixSparseWithZeros'
-%     % Transform it to full format (no compact storage in memory)
-%     % and replace zeros with -1
-%     G = full(AdjMatrixSparseWithZeros);
-%     G(G==0) = -1
+function [T,X,score] = PCSTsubprogram()
+    global G;
+    global Prize;
+    global r;
      F = []; %% A tree
      Comp(length(Prize)).C = []; %% set of components
      Comp(length(Prize)).w = 0;
@@ -333,10 +267,5 @@ X = vt'
 display(X);
 
 display(score);
-[Y, score1] = localsearch(G, Prize, X, score, r);
-
-display(Y);
-display(score1);
-
      
      

@@ -2,9 +2,10 @@
 %%Returns the cost of the tree + prizes of nodes that are not in X 
 %%Author : Vivek Sardeshmukh
 
-function c = compute_score(G, Prize, X)
+function c = compute_score(X)
  %calculate ST on X with root as root
     %graph induced by X
+    global G Prize;
     for i=1:length(G)
        for j=1:length(G)
            if(any(X==i) && any(X==j))
@@ -29,4 +30,5 @@ function c = compute_score(G, Prize, X)
        end
    end
    c=profit-cost_tree;
-   return 
+end
+
