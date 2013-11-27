@@ -3,22 +3,21 @@
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
 function T = PCSTsubprogram(G, Prize, r)
-r = 292; % root node
+r = 5; % root node
 % inputing instances
-        [G,Prize] = inputdata('C02-A.stp');
-% SMALL INSTANCE
-% G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-%      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-%     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-%     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-%     -1 -1 1 -1 -1 1 10 10 1 -1; 
-%     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-%     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-%     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-%     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-%     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
-% 
-% Prize = [10 0 0 150 200 0 100 0 0 20];
+%        [G,Prize] = inputdata('C02-A.stp');
+G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+    -1 -1 1 -1 -1 1 10 10 1 -1; 
+    -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+    -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+    -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+    -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+    -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
+
+Prize = [10 0 0 150 200 0 100 0 0 20];
 
 % end
 %     % Read number of nodes and edges
@@ -78,7 +77,7 @@ r = 292; % root node
      Comp(length(Prize)).Id = 0;
      RootComp = r; %% the id of root components
      d = zeros(length(Prize));
-     score = 0;
+     
      nComp = length(Prize);  %% number of components
      
      VertexBelong = zeros(1, length(Prize)); %% this array is used to denote which component a vertex belongs to. This array is used for 
@@ -305,31 +304,23 @@ r = 292; % root node
    
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
 T.score = score;
-% The commented  code below outputs those terminal nodes that are a part of the
-% solution. It DOESNOT include the non terminal nodes (whixh was a part of
-% the solution)
-% k =1;
-% Prize1 = find(Prize);
-% vt = vt';
-% for i = 1:length(vt)
-% 
-% for j = 1:length(Prize1)
-% if vt(i) == Prize1(j)
-% Y(k) = vt(i);
-% 
-% else
-% Y(k) = 0;
-% 
-% end
-%  k = k+1;
-% end
-% 
-% end
-% Y(X == 0) = [];
+k =1;
 
-X = vt'
+for i = 1:7
 
+for j = 1:5
+if v(i) == p(j)
+B(k) = v(i);
 
+else
+B(k) = 0;
+
+end
+ k = k+1;
+end
+
+end
+B(B == 0) = [];
 display(score);
 
      
