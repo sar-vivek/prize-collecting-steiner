@@ -1,15 +1,20 @@
 %% Constructs a minimum weight tree which spans all the nodes in _X_ 
 %%Returns the cost of the tree + prizes of nodes that are not in X 
 %%Author : Vivek Sardeshmukh
+
 function c = compute_score(G, Prize, X)
-    %calculate ST on X with root as root
+ %calculate ST on X with root as root
     %graph induced by X
     for i=1:length(G)
        for j=1:length(G)
            if(any(X==i) && any(X==j))
-               G1[i,j] = G[i,j];
+               if(G(i,j)==-1)
+                   G1(i,j)=0;
+               else
+                   G1(i,j)=G(i,j);
+               end
            else
-               G1[i,j] = 0;
+               G1(i,j) = 0;
            end
        end
     end
@@ -24,4 +29,4 @@ function c = compute_score(G, Prize, X)
        end
    end
    c=profit-cost_tree;
-end
+   return 
