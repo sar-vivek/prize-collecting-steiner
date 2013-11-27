@@ -65,7 +65,7 @@ r = 292; % root node
      Comp(length(Prize)).Id = 0;
      RootComp = r; %% the id of root components
      d = zeros(length(Prize));
-     
+     score = 0;
      nComp = length(Prize);  %% number of components
      
      VertexBelong = zeros(1, length(Prize)); %% this array is used to denote which component a vertex belongs to. This array is used for 
@@ -289,5 +289,7 @@ r = 292; % root node
   
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
 T.score = score;
+display(score);
+
      
      
