@@ -15,7 +15,7 @@ while(local_improvement)
         %_i_ is not in X then _nX_ will consider _i_
         if (any(X==i))
             nX= setdiff(X, i);
-        else
+        else if(Prize[i]!=0) %_i_ is a terminal node
             nX= union(X, i);
         end
         nc=compute_cost(G,Prize, nX);
