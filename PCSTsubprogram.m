@@ -2,11 +2,10 @@
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
-%% Author : Preethi
 function T = PCSTsubprogram(G, Prize, r)
 r = 292; % root node
 % inputing instances
- %      [G,Prize] = inputdata('C02-A.stp');
+       [G,Prize] = inputdata('C02-A.stp');
 
 % end
 %     % Read number of nodes and edges
@@ -277,18 +276,18 @@ r = 292; % root node
      
      
    
-     
-     score = 0;
-     for i = 1:length(T.V)
+    
+         for i = 1:length(T.V)
          T.V(i).r = Prize(T.V(i).id);
          score = score + Prize(T.V(i).id);
      end
-          
+ 
      for i = 1:length(T.E)         
          score = score - T.E(i).cost;
+         
      end
-
+  
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
-     T.score = score;
+T.score = score;
      
      
