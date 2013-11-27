@@ -304,6 +304,23 @@ Prize = [10 0 0 150 200 0 100 0 0 20];
    
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
 T.score = score;
+k =1;
+
+for i = 1:7
+
+for j = 1:5
+if v(i) == p(j)
+B(k) = v(i);
+
+else
+B(k) = 0;
+
+end
+ k = k+1;
+end
+
+end
+B(B == 0) = [];
 display(score);
 
      

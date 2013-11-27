@@ -3,21 +3,22 @@
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
 function T = PCSTsubprogram(G, Prize, r)
-r = 5; % root node
+r = 292; % root node
 % inputing instances
-%        [G,Prize] = inputdata('C02-A.stp');
-G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-    -1 -1 1 -1 -1 1 10 10 1 -1; 
-    -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-    -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-    -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-    -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-    -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
-
-Prize = [10 0 0 150 200 0 100 0 0 20];
+        [G,Prize] = inputdata('C02-A.stp');
+% SMALL INSTANCE
+% G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+%      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+%     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+%     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+%     -1 -1 1 -1 -1 1 10 10 1 -1; 
+%     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+%     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+%     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+%     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+%     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
+% 
+% Prize = [10 0 0 150 200 0 100 0 0 20];
 
 % end
 %     % Read number of nodes and edges
@@ -301,17 +302,34 @@ Prize = [10 0 0 150 200 0 100 0 0 20];
          
      end
 
-    for j = 1:length(vt)
-        for i = 1:length(Prize)
-if vt(j) == Prize(i)
-     X(i) = vt(j);
-else 
-     X(i) = 0;
-end
-    end
-end
+   
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
 T.score = score;
+% The commented  code below outputs those terminal nodes that are a part of the
+% solution. It DOESNOT include the non terminal nodes (whixh was a part of
+% the solution)
+% k =1;
+% Prize1 = find(Prize);
+% vt = vt';
+% for i = 1:length(vt)
+% 
+% for j = 1:length(Prize1)
+% if vt(i) == Prize1(j)
+% Y(k) = vt(i);
+% 
+% else
+% Y(k) = 0;
+% 
+% end
+%  k = k+1;
+% end
+% 
+% end
+% Y(X == 0) = [];
+
+X = vt'
+
+
 display(score);
 
      
