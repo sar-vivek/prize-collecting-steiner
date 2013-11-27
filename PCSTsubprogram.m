@@ -3,9 +3,21 @@
 %% Prize is vertex penalites, a list of int
 %% r is the root vertex, the output tree will contain the root
 function T = PCSTsubprogram(G, Prize, r)
-r = 292; % root node
+r = 5; % root node
 % inputing instances
-       [G,Prize] = inputdata('C02-A.stp');
+%        [G,Prize] = inputdata('C02-A.stp');
+G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+    -1 -1 1 -1 -1 1 10 10 1 -1; 
+    -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+    -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+    -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+    -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+    -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
+
+Prize = [10 0 0 150 200 0 100 0 0 20];
 
 % end
 %     % Read number of nodes and edges
@@ -277,7 +289,9 @@ r = 292; % root node
      
    
     
-         for i = 1:length(T.V)
+    
+     score = 0;
+     for i = 1:length(T.V)
          T.V(i).r = Prize(T.V(i).id);
          score = score + Prize(T.V(i).id);
      end
@@ -286,8 +300,19 @@ r = 292; % root node
          score = score - T.E(i).cost;
          
      end
-  
+
+    for j = 1:length(vt)
+        for i = 1:length(Prize)
+if vt(j) == Prize(i)
+     X(i) = vt(j);
+else 
+     X(i) = 0;
+end
+    end
+end
 %      Prize(T.E(i).id.i), T.E(i).id.j, Prize(T.E(i).id.j), T.E(i).cost
 T.score = score;
+display(score);
+
      
      
