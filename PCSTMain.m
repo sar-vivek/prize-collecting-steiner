@@ -1,7 +1,7 @@
 %% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
-%% Author : Preethi
+%% Author : Preethi Issac and Vivek B Sardeshmukh
 
 function T = PCSTMain(Prize)
     global G;
@@ -25,13 +25,13 @@ function T = PCSTMain(Prize)
     % Prize = [10 0 0 150 200 0 100 0 0 20];
     
     %initial sol
-    [T, X, score] = PCSTsubprogram();
+    [T, X, score] = InitSol();
     display(X);
     display(score);
     fileid=fopen('output.txt', 'w');
     fprintf(fileid, '%d  ', score);
     %local opt
-    [Y, score1] = localsearch(X, score);
+    [Y, score1] = LocalSearch(X, score);
     display(Y);
     display(score1);
     fprintf(fileid, ' %d\n', score1);

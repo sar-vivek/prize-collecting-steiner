@@ -1,8 +1,11 @@
-%% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
-%% Each vertex in V is denoted by the index 1,2,3,... size(V)
-%% Prize is vertex penalites, a list of int
-%% r is the root vertex, the output tree will contain the root
-function [T,X,score] = PCSTsubprogram()
+%% Intial Solution
+% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
+% Each vertex in V is denoted by the index 1,2,3,... size(V)
+% Prize is vertex penalites, a list of int
+% r is the root vertex, the output tree will contain the root
+% Author : Preethi Issac 
+
+function [T,X,score] = InitSol()
     global G;
     global Prize;
     global r;
