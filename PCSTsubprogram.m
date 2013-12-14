@@ -263,9 +263,4 @@ T.score = score;
 % Y(X == 0) = [];
 
 X = vt'
-
-display(X);
-
-display(score);
-     
-     
+end

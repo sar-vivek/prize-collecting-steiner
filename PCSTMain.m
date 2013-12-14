@@ -4,34 +4,36 @@
 %% Author : Preethi
 
 function T = PCSTMain(Prize)
+    global G;
+    global Prize;
+    global r;
+    r = 292; % root node
+    [G,Prize] = inputdata('C02-A.stp');
+    % SMALL INSTANCE
+    %r=5;
+    % G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+    %      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+    %     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+    %     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+    %     -1 -1 1 -1 -1 1 10 10 1 -1; 
+    %     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+    %     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+    %     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+    %     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+    %     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
 
-%r = 292; % root node
-r=5;
-% inputing instances
-%        [G,Prize] = inputdata('C02-A.stp');
-% SMALL INSTANCE
- global G;
- global Prize;
- global r;
- G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-     -1 -1 1 -1 -1 1 10 10 1 -1; 
-     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
- 
- Prize = [10 0 0 150 200 0 100 0 0 20];
- %initial sol
- [T, X, score] = PCSTsubprogram();
- %local opt
- [Y, score1] = localsearch(X, score);
-
-display(Y);
-display(score1);
-[Z s2] = simann(Y);
+    % Prize = [10 0 0 150 200 0 100 0 0 20];
+    
+    %initial sol
+    [T, X, score] = PCSTsubprogram();
+    display(X);
+    display(score);
+    fileid=fopen('output.txt', 'w');
+    fprintf(fileid, '%d  ', score);
+    %local opt
+    [Y, score1] = localsearch(X, score);
+    display(Y);
+    display(score1);
+    fprintf(fileid, ' %d\n', score1);
 end
 
