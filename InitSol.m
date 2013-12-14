@@ -70,7 +70,7 @@ function [T,X,score] = InitSol()
             
             for j=(i+1):length(G(1,:))
                 %% filter off the entries not representing valid edge cost
-                if not(G(i,j) >= 0) || VertexBelong(i) == VertexBelong(j)
+                if not(G(i,j) > 0) || VertexBelong(i) == VertexBelong(j)
                     continue;
                 end
                 
