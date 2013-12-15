@@ -23,11 +23,10 @@ function T = PCSTMain(Prize)
     global count;
     count = 0;
 
-    fileid = fopen('output.txt', 'a+');
 
      %SMALL INSTANCE
      %r=5;
-    % G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+     %G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
      %     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
      %    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
      %    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
@@ -40,31 +39,32 @@ function T = PCSTMain(Prize)
 
      %Prize = [10 0 0 150 200 0 100 0 0 20];
     
-    %initial sol
-  
     [G,Prize] = InputData('C02-A.stp');
-    
+    %initial sol
+    tic;
     [T, X, scoreX] = InitSol();
-    
-    display(X);
-    display(scoreX);
+    initTime = toc;
+    %display(X);
+    %display(scoreX);
  
-    fprintf(fileid, '%d  ', scoreX);
-  
     %local search 
     lf = fopen('local.txt', 'w');
+    tic;
     [Y, scoreY] = LocalSearch(X, scoreX);
-    display(Y);
-    display(scoreY);
-    fprintf(fileid, ' %d\n', scoreY);
+    localTime = toc;
+    %display(Y);
+    %display(scoreY);
 
     %Simulated Annealing starting with 0.5-approx 
-    %EMin = 10 * scoreX;    %and hoping for a 0.9-approx 
-   % [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
+    EMin = 1.8 * scoreX;    %and hoping for a 0.9-approx 
+    tic;
+    [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
+    simTime = toc;
     %display(Z);
     %display(scoreZ);
-    %fprintf(fileid, ' %d\n', scoreZ);
+
+    fileid = fopen('output.txt', 'a+');
+    fprintf(fileid, '%d %d %d %g %g %g\n', scoreX, scoreY, scoreZ, initTime, localTime, simTime);
     fclose(fileid);
     exit;
 end
-
