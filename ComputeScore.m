@@ -6,6 +6,8 @@ function c = ComputeScore(X)
  %calculate ST on X with root as root
     %graph induced by X
     global G Prize;
+    % this is wrong need to fix how G1 is constructed
+    % http://stackoverflow.com/questions/7685291/construct-a-minimum-spanning-tree-covering-a-specific-subset-of-the-vertices
     for i = 1:length(G)
        for j = 1:length(G)
            if(any(X == i) && any(X == j))
@@ -29,6 +31,10 @@ function c = ComputeScore(X)
            profit = profit + Prize(i);
        end
    end
-   c = profit - cost_tree;
+   if (cost_tree == 0)
+       c = -1;
+   else
+       c = profit - cost_tree;
+   end
 end
 

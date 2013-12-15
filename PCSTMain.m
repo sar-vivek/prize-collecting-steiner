@@ -25,19 +25,16 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
 
 
      %SMALL INSTANCE
-     r=5;
-     G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-          1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-         10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-         -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-         -1 -1 1 -1 -1 1 10 10 1 -1; 
-         -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-         -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-         -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-         -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-         -1 -1 -1 -1 -1 -1 -1 100 100 -1;];
+     r=6;
+     G = [ -1  4 -1 -1 -1 -1 -1;
+	    4 -1  7 -1 -1  3 -1;
+	   -1  7 -1  3 -1 -1 -1;
+	   -1 -1  3 -1  5 -1 -1;
+	   -1 -1 -1  5 -1  2 -1;
+	   -1  3 -1 -1  2 -1  1;
+	   -1 -1 -1 -1 -1  1 -1;];  
 
-     Prize = [10 0 0 150 200 0 100 0 0 20];
+     Prize = [100 0 200 4 300 400 0];
     
     %[G,Prize] = InputData(inputfile);
     %initial sol
@@ -45,18 +42,20 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     [T, X, scoreX] = InitSol();
     initTime = toc;
     dualX = DualComputeScore(X);
-    %display(X);
-    %display(scoreX);
+    display(X);
+    display(scoreX);
+    display(T);
  
     %local search 
-    lf = fopen('local.txt', 'w');
+    localfile = strcat(inputfile, 'local.txt');
+    lf = fopen(localfile, 'w');
     tic;
     [Y, scoreY] = LocalSearch(X, scoreX);
     localTime = toc;
     dualY = DualComputeScore(Y);
     fclose(lf);
-    %display(Y);
-    %display(scoreY);
+    display(Y);
+    display(scoreY);
 
     %Simulated Annealing starting with 0.5-approx 
     EMin = 1.8 * scoreX;    %and hoping for a 0.9-approx 
@@ -64,8 +63,8 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
     simTime = toc;
     dualZ = DualComputeScore(Z);
-    %display(Z);
-    %display(scoreZ);
+    display(Z);
+    display(scoreZ);
 
     fileid = fopen(outputfile, 'a+');
     fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
