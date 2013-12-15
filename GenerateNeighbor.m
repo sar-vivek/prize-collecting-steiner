@@ -7,9 +7,10 @@ function  nX  = GenerateNeighbor( X )
     global r;
     for i = 1 : length(G)
 	p = rand(1 ,1);
-	if (i == r)
-	    continue;
-	elseif (any(X == i))
+	if (any(X == i))
+    	    if (i == r)
+		continue;
+	    end
 	    nX = setdiff(X, i);
 	else  
 	    nX = union(X, i);
@@ -18,5 +19,6 @@ function  nX  = GenerateNeighbor( X )
 	    break;
 	end
     end
+    nx = union(nX, r);
 end
 

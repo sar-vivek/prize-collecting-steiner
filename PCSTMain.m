@@ -11,10 +11,10 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     global EMin;    %minimum value of maximization obj fun we want.. set to 2*opt (init sol)
 
     % Setting up parameters
-    r	    = 292;  % root node
+    r	    = 157;  % root node
     GenProb = 0.8;  % probability with a neighbor is genereted in GenerateNeighbor function
-    TMax    = 1000;  % cooling schedule initial temp
-    TMin    = 0.001; % final temp
+    TMax    = 10000;  % cooling schedule initial temp
+    TMin    = 0.0001; % final temp
     Alpha   = 0.8;   % t = Alpha * t 
 
 
@@ -25,24 +25,40 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
 
 
      %SMALL INSTANCE
-     r=6;
-     G = [ -1  4 -1 -1 -1 -1 -1;
-	    4 -1  7 -1 -1  3 -1;
-	   -1  7 -1  3 -1 -1 -1;
-	   -1 -1  3 -1  5 -1 -1;
-	   -1 -1 -1  5 -1  2 -1;
-	   -1  3 -1 -1  2 -1  1;
-	   -1 -1 -1 -1 -1  1 -1;];  
+     %r=6;
+     %G = [ -1  4 -1 -1 -1 -1 -1;
+%	    4 -1  7 -1 -1  3 -1;
+%	   -1  7 -1  3 -1 -1 -1;
+%	   -1 -1  3 -1  5 -1 -1;
+%	   -1 -1 -1  5 -1  2 -1;
+%	   -1  3 -1 -1  2 -1  1;
+%	   -1 -1 -1 -1 -1  1 -1;];  
 
-     Prize = [100 0 0 4 100 0 100];
+%    Prize = [100 0 0 4 100 0 100];
 
-    %[G,Prize] = InputData(inputfile);
+    [G,Prize] = InputData(inputfile);
 
     assert(isequal(G, G'), 'Not an undirected graph');
 
     %initial sol
     tic;
-    [T, X, scoreX] = InitSol();
+%    bestscore = 0;
+%    bestr = 292;
+  %  for r = 1 : length(Prize)
+%	if(Prize(r) == 0)
+%	    continue;
+%	end
+	[T, X, scoreX] = InitSol();
+%	if (bestscore < scoreX)
+%	    bestscore = scoreX;
+%	    bestX = X;
+%	    bestr = r;
+%	end
+%    end
+%    r = bestr;
+%    X = bestX;
+%    scoreX = bestscore;
+
     initTime = toc;
     dualX = DualComputeScore(X);
     display(X);
@@ -50,27 +66,41 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     display(T);
  
     %local search 
-    localfile = strcat(inputfile, 'local.txt');
-    lf = fopen(localfile, 'w');
-    tic;
-    [Y, scoreY] = LocalSearch(X, scoreX);
-    localTime = toc;
-    dualY = DualComputeScore(Y);
-    fclose(lf);
-    display(Y);
-    display(scoreY);
+  %  localfile = strcat(inputfile, 'local.txt');
+  %  lf = fopen(localfile, 'w');
+ %   tic;
+  %  [Y, scoreY] = LocalSearch(X, scoreX);
+ %   localTime = toc;
+ %   dualY = DualComputeScore(Y);
+ %   fclose(lf);
+ %   display(Y);
+ %   display(scoreY);
 
     %Simulated Annealing starting with 0.5-approx 
-    EMin = 1.8 * scoreX;    %and hoping for a 0.9-approx 
+   % EMin = 1.8 * scoreX;    %and hoping for a 0.9-approx 
+    EMin = 100;    %and hoping for a 0.9-approx 
     tic;
+    X = union(X, r);
     [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
     simTime = toc;
     dualZ = DualComputeScore(Z);
     display(Z);
     display(scoreZ);
+    display(dualZ);
+    for i = 1:length(Prize)
+	if(Prize(i) == 0)
+	    continue;
+	else
+	    if (any(Z == i))
+		ZT = union(ZT, i) 
+	    end
+	end
+    end
+    display(ZT);
 
     fileid = fopen(outputfile, 'a+');
-    fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
+    fprintf(fileid, '%s %d (%d)  %d (%d)  %g  %g\n', inputfile, scoreX, dualX, scoreZ, dualZ,  initTime, simTime);
+   % fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
     fclose(fileid);
-    %exit;
+    exit;
 end
