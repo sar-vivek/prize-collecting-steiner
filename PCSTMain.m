@@ -68,7 +68,7 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     %display(scoreZ);
 
     fileid = fopen(outputfile, 'a+');
-    fprintf(fileid, '%d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
+    fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
     fclose(fileid);
     exit;
 end

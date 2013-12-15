@@ -1,7 +1,7 @@
 %reads the input file
 %author : Preethi Issac
-function [G,Prize] = InputData(content)
-content = fileread( 'C02-A.stp' ) ;
+function [G,Prize] = InputData(inputfile)
+content = fileread( inputfile ) ;
  % - Extract graph information.
  pattern    = 'Nodes\s+(?<nodes>\d+)\s+Edges\s+(?<edges>\d+)\s+(?<data>.*)SEC' ;
  graph      = regexp( content, pattern, 'names' ) ;
