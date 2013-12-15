@@ -1,0 +1,17 @@
+x - current solution 
+
+y - 'generate' a next solution  - y is a neigh of x - select a random neighbor of x.
+compute cost of y -  i;ve a fun to do that yaay!
+
+'accept' y i.e. x <-- y  with some 'probability'
+    cost y > cost x 
+
+
+    cost y < cost x
+
+
+
+    
+repeat
+
+ 
