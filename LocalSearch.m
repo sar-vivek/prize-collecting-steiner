@@ -2,10 +2,11 @@
 % Neighborhood definition : X and nX are neighbors if they differ exactly in one node. 
 % G is edge-weight matrix 
 % Prize is an array denoting penalties (if we skip) or prize (if we visit) of nodes
-% Requires : compute_cost function : which constructs a tree spanning nodes in X and returns the cost of tree + penalties of not visited nodes.
+% Requires : ComputeScore function : which constructs a tree spanning nodes in X and returns the prizes of nodes visited - cost of t.
+% stops on local maximum 
 % Author: Vivek Sardeshmukh
 function [X,c] = LocalSearch(X, c)
-    global G r;
+    global G r count lf;
     
     local_improvement = 1;
     %_c_ is the cost of current solution 
@@ -24,6 +25,8 @@ function [X,c] = LocalSearch(X, c)
                 X = nX;
                 c = nc;
                 local_improvement = 1;
+                count = count + 1;
+                fprintf(lf, 'Count is %d\n', count); 
                 break;
                 % first improvement found so stop and exit
             end

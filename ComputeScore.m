@@ -1,6 +1,6 @@
 %% Constructs a minimum weight tree which spans all the nodes in _X_ 
-%%Returns the cost of the tree + prizes of nodes that are not in X 
-%%Author : Vivek Sardeshmukh
+% Returns the prizes of nodes that are in X - cost of the tree 
+% Author : Vivek Sardeshmukh
 
 function c = ComputeScore(X)
  %calculate ST on X with root as root

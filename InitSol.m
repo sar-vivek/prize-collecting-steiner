@@ -34,7 +34,7 @@ function [T,X,score] = InitSol()
          end
          VertexBelong(i) = i; %% initially, each vertex is in its own component
      end
-        
+     fprintf(1, 'end of 1');   
      next_id = length(Prize)+1;  %% next availiable id to assign a component
      
      
@@ -174,6 +174,7 @@ function [T,X,score] = InitSol()
         
      end
      
+     fprintf(1, 'end of 2');
      % remove the edges!
      rm = [];
      for i = 1:length(F)

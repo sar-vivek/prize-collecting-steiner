@@ -1,14 +1,29 @@
 %% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
-%% Author : Preethi Issac and Vivek B Sardeshmukh
-
+%% Author : Preethi Issac 
 function T = PCSTMain(Prize)
     global G;
     global Prize;
     global r;
-    r = 292; % root node
-    [G,Prize] = inputdata('C02-A.stp');
+    global GenProb;
+    global TMax TMin Alpha; 
+    global EMin;    %minimum value of maximization obj fun we want.. set to 2*opt (init sol)
+
+    % Setting up parameters
+    r	    = 292;  % root node
+    GenProb = 0.8;  % probability with a neighbor is genereted in GenerateNeighbor function
+    TMax    = 1000  % cooling schedule initial temp
+    TMin    = 0.001 % final temp
+    Alpha   = 0.8   % t = Alpha * t 
+
+
+    % debug variables
+    global lf; %file for debugging in localsearch
+    global count = 0;
+
+    fileid = fopen('output.txt', 'w');
+
     % SMALL INSTANCE
     %r=5;
     % G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
@@ -25,15 +40,26 @@ function T = PCSTMain(Prize)
     % Prize = [10 0 0 150 200 0 100 0 0 20];
     
     %initial sol
+  
+    [G,Prize] = InputData('C02-A.stp');
+    
     [T, X, score] = InitSol();
+    
     display(X);
-    display(score);
-    fileid=fopen('output.txt', 'w');
-    fprintf(fileid, '%d  ', score);
-    %local opt
-    [Y, score1] = LocalSearch(X, score);
+    display(scoreX);
+
+    fprintf(fileid, '%d  ', scoreX);
+  
+    %local search 
+    lf = fopen('local.txt', 'w');
+    [Y, scoreY] = LocalSearch(X, scoreX);
     display(Y);
-    display(score1);
-    fprintf(fileid, ' %d\n', score1);
+    display(scoreY);
+
+    fprintf(fileid, ' %d\n', scoreY);
+
+    %Simulated Annealing starting with 0.5-approx 
+    EMin = 1.2 * scoreX;    %and hoping for a 0.6-approx 
+    [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
 end
 
