@@ -35,8 +35,11 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
 	   -1 -1 -1 -1 -1  1 -1;];  
 
      Prize = [100 0 200 4 300 400 0];
-    
+
     %[G,Prize] = InputData(inputfile);
+
+    assert(iseqaul(G, G'), 'Not an undirected graph');
+
     %initial sol
     tic;
     [T, X, scoreX] = InitSol();
@@ -69,5 +72,5 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     fileid = fopen(outputfile, 'a+');
     fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
     fclose(fileid);
-    exit;
+    %exit;
 end
