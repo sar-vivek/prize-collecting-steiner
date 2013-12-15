@@ -13,41 +13,42 @@ function T = PCSTMain(Prize)
     % Setting up parameters
     r	    = 292;  % root node
     GenProb = 0.8;  % probability with a neighbor is genereted in GenerateNeighbor function
-    TMax    = 1000  % cooling schedule initial temp
-    TMin    = 0.001 % final temp
-    Alpha   = 0.8   % t = Alpha * t 
+    TMax    = 1000;  % cooling schedule initial temp
+    TMin    = 0.001; % final temp
+    Alpha   = 0.8;   % t = Alpha * t 
 
 
     % debug variables
     global lf; %file for debugging in localsearch
-    global count = 0;
+    global count;
+    count = 0;
 
-    fileid = fopen('output.txt', 'w');
+    fileid = fopen('output.txt', 'a+');
 
-    % SMALL INSTANCE
-    %r=5;
+     %SMALL INSTANCE
+     %r=5;
     % G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-    %      1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-    %     10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-    %     -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-    %     -1 -1 1 -1 -1 1 10 10 1 -1; 
-    %     -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-    %     -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-    %     -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-    %     -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-    %     -1 -1 -1 -1 -1 -1 -1 100 100 -1;]
+     %     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+     %    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+     %    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+     %    -1 -1 1 -1 -1 1 10 10 1 -1; 
+     %    -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+     %    -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+     %    -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+     %    -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+     %    -1 -1 -1 -1 -1 -1 -1 100 100 -1;];
 
-    % Prize = [10 0 0 150 200 0 100 0 0 20];
+     %Prize = [10 0 0 150 200 0 100 0 0 20];
     
     %initial sol
   
     [G,Prize] = InputData('C02-A.stp');
     
-    [T, X, score] = InitSol();
+    [T, X, scoreX] = InitSol();
     
     display(X);
     display(scoreX);
-
+ 
     fprintf(fileid, '%d  ', scoreX);
   
     %local search 
@@ -55,11 +56,15 @@ function T = PCSTMain(Prize)
     [Y, scoreY] = LocalSearch(X, scoreX);
     display(Y);
     display(scoreY);
-
     fprintf(fileid, ' %d\n', scoreY);
 
     %Simulated Annealing starting with 0.5-approx 
-    EMin = 1.2 * scoreX;    %and hoping for a 0.6-approx 
-    [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
+    %EMin = 10 * scoreX;    %and hoping for a 0.9-approx 
+   % [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
+    %display(Z);
+    %display(scoreZ);
+    %fprintf(fileid, ' %d\n', scoreZ);
+    fclose(fileid);
+    exit;
 end
 

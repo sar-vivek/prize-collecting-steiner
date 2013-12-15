@@ -15,7 +15,7 @@ function [ sbest, ebest ] = SimulatedAnnealing(s, e)
     k = 0;
     t = TMax;
 
-    while ( t < TMin && e < EMin) 
+    while ( t > TMin && e < EMin) 
         t = Alpha * t; 
         snew = GenerateNeighbor( s );
         enew = ComputeScore( snew );

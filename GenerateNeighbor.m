@@ -3,6 +3,8 @@
 
 function  nX  = GenerateNeighbor( X )
     global GenProb;
+    global G;
+    global r;
     for i = 1 : length(G)
 	p = rand(1 ,1);
 	if (i == r)
