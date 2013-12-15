@@ -269,5 +269,5 @@ T.score = score;
 % end
 % Y(X == 0) = [];
 
-X = vt'
+X = vt';
 end

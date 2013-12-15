@@ -34,11 +34,11 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
 	   -1  3 -1 -1  2 -1  1;
 	   -1 -1 -1 -1 -1  1 -1;];  
 
-     Prize = [100 0 200 4 300 400 0];
+     Prize = [100 0 0 4 100 0 100];
 
     %[G,Prize] = InputData(inputfile);
 
-    assert(iseqaul(G, G'), 'Not an undirected graph');
+    assert(isequal(G, G'), 'Not an undirected graph');
 
     %initial sol
     tic;
