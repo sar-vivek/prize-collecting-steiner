@@ -1,7 +1,7 @@
 %% G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
 %% Each vertex in V is denoted by the index 1,2,3,... size(V)
 %% Prize is vertex penalites, a list of int
-%% Author : Preethi Issac 
+%% Author : Preethi Issac and Vivek B Sardeshmukh
 function T = PCSTMain(Prize)
     global G;
     global Prize;
@@ -25,25 +25,26 @@ function T = PCSTMain(Prize)
 
 
      %SMALL INSTANCE
-     %r=5;
-     %G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
-     %     1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
-     %    10 -1 -1 10 1 -1 -1 -1 -1 -1; 
-     %    -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
-     %    -1 -1 1 -1 -1 1 10 10 1 -1; 
-     %    -1 10 -1 -1 1 -1 10 -1 -1 -1; 
-     %    -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
-     %    -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
-     %    -1 -1 -1 10 1 -1 -1 -1 -1 100; 
-     %    -1 -1 -1 -1 -1 -1 -1 100 100 -1;];
+     r=5;
+     G = [-1 1 10 -1 -1 -1 -1 -1 -1 -1; 
+          1 -1 -1 -1 -1 10 -1 -1 -1 -1; 
+         10 -1 -1 10 1 -1 -1 -1 -1 -1; 
+         -1 -1 1 -1 -1 -1 -1 -1 10 -1; 
+         -1 -1 1 -1 -1 1 10 10 1 -1; 
+         -1 10 -1 -1 1 -1 10 -1 -1 -1; 
+         -1 -1 -1 -1 10 10 -1 -1 -1 -1; 
+         -1 -1 -1 -1 10 -1 -1 -1 -1 100; 
+         -1 -1 -1 10 1 -1 -1 -1 -1 100; 
+         -1 -1 -1 -1 -1 -1 -1 100 100 -1;];
 
-     %Prize = [10 0 0 150 200 0 100 0 0 20];
+     Prize = [10 0 0 150 200 0 100 0 0 20];
     
-    [G,Prize] = InputData('C02-A.stp');
+    %[G,Prize] = InputData('C02-A.stp');
     %initial sol
     tic;
     [T, X, scoreX] = InitSol();
     initTime = toc;
+    dualX = DualComputeScore(X);
     %display(X);
     %display(scoreX);
  
@@ -52,6 +53,8 @@ function T = PCSTMain(Prize)
     tic;
     [Y, scoreY] = LocalSearch(X, scoreX);
     localTime = toc;
+    dualY = DualComputeScore(Y);
+    fclose(lf);
     %display(Y);
     %display(scoreY);
 
@@ -60,11 +63,12 @@ function T = PCSTMain(Prize)
     tic;
     [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
     simTime = toc;
+    dualZ = DualComputeScore(Z);
     %display(Z);
     %display(scoreZ);
 
     fileid = fopen('output.txt', 'a+');
-    fprintf(fileid, '%d %d %d %g %g %g\n', scoreX, scoreY, scoreZ, initTime, localTime, simTime);
+    fprintf(fileid, '%d (%d)  %d (%d) %d (%d)  %g %g %g\n', scoreX, dualX, scoreY, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
     fclose(fileid);
     exit;
 end

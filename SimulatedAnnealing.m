@@ -1,7 +1,7 @@
 %% Simulated Annealing 
 % takes a solution s and its score e
 % returns a solution which maximizes e 
-% Author: Vivek B Sardeshmukh
+% Author: Vivek B Sardeshmukh and Preethi Issac
 
 function [ sbest, ebest ] = SimulatedAnnealing(s, e)
     global EMin;

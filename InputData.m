@@ -1,5 +1,5 @@
 %reads the input file
-%author : Preethi
+%author : Preethi Issac
 function [G,Prize] = InputData(content)
 content = fileread( 'C02-A.stp' ) ;
  % - Extract graph information.
@@ -18,7 +18,7 @@ graph.data{2}(E+1) = [];
 graph.data{3}(E+1) = [];
 Prize = zeros(1,N);
 for k = 1 : T
-    Prize(1,terminals.data{1}(k)) = terminals.data{2}(k)*1000 ;
+    Prize(1,terminals.data{1}(k)) = terminals.data{2}(k) ;
  end
 % node1 = graph.data{1};
 

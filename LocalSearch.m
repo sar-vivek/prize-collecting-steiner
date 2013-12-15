@@ -5,6 +5,7 @@
 % Requires : ComputeScore function : which constructs a tree spanning nodes in X and returns the prizes of nodes visited - cost of t.
 % stops on local maximum 
 % Author: Vivek Sardeshmukh
+
 function [X,c] = LocalSearch(X, c)
     global G r count lf;
     

@@ -1,4 +1,8 @@
 %% Intial Solution
+% Derived from : M. X. Goemans and D. P. Williamson, The primal dual method for approximation algorithms
+% and its application to network design problems, Approximation algorithms for NP-hard problems 
+% (D. Hochbaum, ed.), PWS Publishing Co., 1996, pp. 144–191.
+%
 % G is matrix representing a undirected graph (V,E) have none negtive weighted edges, where the G(i,j) is the cost of edge(i,j)
 % Each vertex in V is denoted by the index 1,2,3,... size(V)
 % Prize is vertex penalites, a list of int
