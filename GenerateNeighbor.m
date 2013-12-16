@@ -6,14 +6,14 @@ function  nX  = GenerateNeighbor( X )
     global G;
     global r;
     global Prize;
-    terminal = find(Prize); 
-    for j = 1 : length(terminal)
-	i = terminal(j);
+    permutedG =  randperm(length(G));
+    for j = 1 : length(G)
+	i = permutedG(j);
 	p = rand(1 ,1);
-	if (any(X == i))
-    	    if (i == r)
+       	if (i == r)
 		continue;
-	    end
+	end
+	if (any(X == i))
 	    nX = setdiff(X, i);
 	else  
 	    nX = union(X, i);

@@ -8,24 +8,16 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     global r;
     global GenProb;
     global TMax TMin Alpha; 
-    global EMin;    %minimum value of maximization obj fun we want.. set to 2*opt (init sol)
-
-    % Setting up parameters
-    r	    = 157;  % root node
-    GenProb = 0.8;  % probability with a neighbor is genereted in GenerateNeighbor function
-    TMax    = 50000;  % cooling schedule initial temp
-    TMin    = 0.0001; % final temp
-    Alpha   = 0.9;   % t = Alpha * t 
-
+    global EMin;    %minimum value of maximization obj fun we want
 
     % debug variables
     global lf; %file for debugging in localsearch
     global count;
     count = 0;
 
-
     %%SMALL INSTANCE
-    r=6;
+    %{
+    r=1;
     G = [ -1  4 -1 -1 -1 -1 -1;
     	    4 -1  7 -1 -1  3 -1;
     	   -1  7 -1  3 -1 -1 -1;
@@ -35,19 +27,22 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     	   -1 -1 -1 -1 -1  1 -1;];  
 
         Prize = [100 0 0 4 100 0 100];
+    %}
 
-   % [G,Prize] = InputData(inputfile);
+    r	      = 157;  % root node
+    [G,Prize] = InputData(inputfile);
 
     assert(isequal(G, G'), 'Not an undirected graph');
  
-    X = [4 7];
+    %{
+    X = [1 2];
     display(X);
     xc = ComputeScore(X);
     display(xc);
+    %}
 
-
-    %{
     %%initial sol
+    
     tic;
     %    bestscore = 0;
     %    bestr = 292;
@@ -70,7 +65,7 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     dualX = DualComputeScore(X);
     display(X);
     display(scoreX);
-    display(T);
+    %display(T);
 
     %%local search 
     %{
@@ -86,10 +81,19 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     %}
 
     %%Simulated Annealing starting with 0.5-approx 
-    % EMin = 1.8 * scoreX;    %and hoping for a 0.9-approx 
-    EMin = 100;    %and hoping for a 0.9-approx 
-    tic;
+    % set up parameters
+    
+    GenProb = 0.8;	    % probability with a neighbor is genereted in GenerateNeighbor function
+    TMax    = 1000000;	    % cooling schedule initial temp
+    Alpha   = 0.9;	    % t = Alpha * t 
+    EMin    = 1.8 * scoreX; % and hoping for a 0.9-approx 
+    EMin    = 50;	    % and hoping for a 0.9-approx 
+    TMin    = TMax * ( Alpha^length(G) );	    % final temp or set dynamically to run at least n iterations.
+
+    %X = find(Prize);
     X = union(X, r);
+    scoreX = ComputeScore(X);
+    tic;
     [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
     simTime = toc;
     dualZ = DualComputeScore(Z);

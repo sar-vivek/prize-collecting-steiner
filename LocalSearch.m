@@ -10,10 +10,12 @@ function [X,c] = LocalSearch(X, c)
     global G r count lf;
     
     local_improvement = 1;
+    permutedG =  randperm(length(G));
     %_c_ is the cost of current solution 
     while(local_improvement)
         local_improvement = 0 ;
-        for i = 1:length(G)
+        for j = 1:length(G)
+	    i = permutedG(j);
             if(i == r)
                 continue;
             elseif (any(X == i)) %_i_ is in X then _nX_ will not consider _i_
