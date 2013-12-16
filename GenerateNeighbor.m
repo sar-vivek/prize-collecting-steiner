@@ -5,7 +5,10 @@ function  nX  = GenerateNeighbor( X )
     global GenProb;
     global G;
     global r;
-    for i = 1 : length(G)
+    global Prize;
+    terminal = find(Prize); 
+    for j = 1 : length(terminal)
+	i = terminal(j);
 	p = rand(1 ,1);
 	if (any(X == i))
     	    if (i == r)
@@ -21,4 +24,3 @@ function  nX  = GenerateNeighbor( X )
     end
     nx = union(nX, r);
 end
-
