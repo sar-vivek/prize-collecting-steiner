@@ -14,29 +14,29 @@ function [T,X,score] = InitSol()
     global Prize;
     global r;
       F = []; %% A tree
-     Store(length(Prize)).C = []; %% set of components
-     Store(length(Prize)).w = 0;
-     Store(length(Prize)).lambda = 1;
-     Store(length(Prize)).Id = 0;
-     RootStore = r; %% the id of root components
+     Comp(length(Prize)).C = []; %% set of components
+     Comp(length(Prize)).w = 0;
+     Comp(length(Prize)).lambda = 1;
+     Comp(length(Prize)).Id = 0;
+     RootComp = r; %% the id of root components
      d = zeros(length(Prize));
      
-     nStore = length(Prize);  %% number of components
+     nComp = length(Prize);  %% number of components
      
-     B = zeros(1, length(Prize)); %% this array is used to denote which component a vertex belongs to. This array is used for 
-     %% eg, B(3) = 5 means that the Vertex is in the component 5
+     VertexBelong = zeros(1, length(Prize)); %% this array is used to denote which component a vertex belongs to. This array is used for 
+     %% eg, VertexBelong(3) = 5 means that the Vertex is in the componet5
      %% VertexMark = zeros(1, length(Prize));  %% each vertex is labelled with certain component
      
      for i=1: length(Prize)
-         Store(i).w = 0;
-         Store(i).C = [i];
-         Store(i).Id = i;
+         Comp(i).w = 0;
+         Comp(i).C = [i];
+         Comp(i).Id = i;
          if( i == r )
-            Store(i).lambda = 0;
+            Comp(i).lambda = 0;
          else
-            Store(i).lambda = 1;
+            Comp(i).lambda = 1;
          end
-         B(i) = i; %% initially, each vertex is in its own component
+         VertexBelong(i) = i; %% initially, each vertex is in its own component
      end
         
      next_id = length(Prize)+1;  %% next availiable id to assign a component
@@ -44,13 +44,19 @@ function [T,X,score] = InitSol()
      
          
      while (1)
-        %% while there exists a component in Store such that its lambda = 1, the while loop continues..
+        %% while there exists a component in Comp such that its lambda = 1, the while loop continues..
         flag = 0;
-           
+        %% print all comp
+        %{
+        for i=1: length(Comp)
+            fprintf('The comp id is %d with lambda %d.', Comp(i).Id, Comp(i).lambda);
+            disp(Comp(i).C);
+        end
+        %}    
             
             
-        for i=1: length(Store)
-            if Store(i).lambda == 1;
+        for i=1: length(Comp)
+            if Comp(i).lambda == 1;
                 flag = 1;                
                 break;
             end
@@ -60,23 +66,23 @@ function [T,X,score] = InitSol()
             break;
         end
         
-        %% Find an edge minimize ED {Objective}
-        ED = Inf;
-        New_Edge.i = 0;
-        New_Edge.j = 0;
+        %% Find an edge minimize e1
+        e1 = Inf;
+        Edge_chosn.i = 0;
+        Edge_chosn.j = 0;
         for i=1:length(G(1,:))
             
             for j=(i+1):length(G(1,:))
-                %% Get rid of  invalid edge cost!
-                if not(G(i,j) >= 0) || B(i) == B(j)
+                %% filter off the entries not representing valid edge cost
+                if not(G(i,j) >= 0) || VertexBelong(i) == VertexBelong(j)
                     continue;
                 end
                 
-                etmp = (G(i,j) - d(i) - d(j))/( Store( B(i) ).lambda + Store( B(j) ).lambda );
-                if etmp < ED
-                    ED = etmp;
-                    New_Edge.i = i;
-                    New_Edge.j = j;
+                etmp = (G(i,j) - d(i) - d(j))/( Comp( VertexBelong(i) ).lambda + Comp( VertexBelong(j) ).lambda );
+                if etmp < e1
+                    e1 = etmp;
+                    Edge_chosn.i = i;
+                    Edge_chosn.j = j;
                 end
                                
             end
@@ -85,16 +91,16 @@ function [T,X,score] = InitSol()
         %% Find an edge minimize e2
         e2 = Inf;
         Ct_idx = 1;
-        for i=1:length(Store)
+        for i=1:length(Comp)
             
-            if (Store(i).lambda == 1)
-                etmp = sum( Prize( Store(i).C(1:length(Store(i).C)) ) );
+            if (Comp(i).lambda == 1)
+                etmp = sum( Prize( Comp(i).C(1:length(Comp(i).C)) ) );
                 %{
-                for k = 1: length(Store(i).C)
-                    etmp = etmp + Prize( Store(i).C(k) );
+                for k = 1: length(Comp(i).C)
+                    etmp = etmp + Prize( Comp(i).C(k) );
                 end
                 %}
-                etmp = etmp - Store(i).w;
+                etmp = etmp - Comp(i).w;
                 
                 if (etmp < e2)
                     e2 = etmp;
@@ -106,51 +112,63 @@ function [T,X,score] = InitSol()
             end
         end
         
-        e = min(ED,e2);
+        e = min(e1,e2);
         
         %% update the w(C) for all component  --- implicitly set yc = yc + lambda(C) for all C
-       for i=1:length(Store)
-          Store(i).w = Store(i).w + e*Store(i).lambda;         
+       for i=1:length(Comp)
+          Comp(i).w = Comp(i).w + e*Comp(i).lambda;         
        end   
        
                 
         %% implicitly set ys = 0 for all S belongs to V
      
-        for i=1:length(Store(RootStore).C)
-            d(  Store(RootStore).C(i) ) =  d( Store(RootStore).C(i) ) + e*Store(RootStore).lambda;
+        for i=1:length(Comp(RootComp).C)
+            d(  Comp(RootComp).C(i) ) =  d( Comp(RootComp).C(i) ) + e*Comp(RootComp).lambda;
         end
         
         if (e == e2)
-            Store(Ct_idx).lambda = 0;
+            Comp(Ct_idx).lambda = 0;
+           %%mark the unlabelled vertices of Ct with label Ct
+           %{
+            for i=1:length(Comp(Ct_idx).C)            
+               VertexMark( Comp(Ct_idx).C(i) ) = Comp(Ct_idx).Id;
+            end
+           %} 
+           %% disp('not add edge this round');
         else             
-            F = [F, New_Edge];
-            Store(nStore+1).C = [Store( (B(New_Edge.i))).C  Store( (B(New_Edge.j))).C ];
-            Store(nStore+1).w = Store( (B(New_Edge.i))).w + Store( (B(New_Edge.j))).w;
-            Store(nStore+1).Id = next_id;
+            F = [F, Edge_chosn];
+            Comp(nComp+1).C = [Comp( (VertexBelong(Edge_chosn.i))).C  Comp( (VertexBelong(Edge_chosn.j))).C ];
+            Comp(nComp+1).w = Comp( (VertexBelong(Edge_chosn.i))).w + Comp( (VertexBelong(Edge_chosn.j))).w;
+            Comp(nComp+1).Id = next_id;
             next_id = next_id + 1;
          
-          
-            if( (B(r) == (B(New_Edge.i))) ||  (B(r) == (B(New_Edge.j))) )
-               Store(nStore+1).lambda = 0;
+            %%disp(VertexBelong(r));
+            if( (VertexBelong(r) == (VertexBelong(Edge_chosn.i))) ||  (VertexBelong(r) == (VertexBelong(Edge_chosn.j))) )
+               Comp(nComp+1).lambda = 0;
             else 
-               Store(nStore+1).lambda = 1;
+               Comp(nComp+1).lambda = 1;
             end
             
-            Store([(B(New_Edge.i)) (B(New_Edge.j))]) = [];
-            nStore = length(Store);
+            Comp([(VertexBelong(Edge_chosn.i)) (VertexBelong(Edge_chosn.j))]) = [];
+            nComp = length(Comp);
             
-           
-            for i=1:length(Store(nStore).C)
-           
-                B(Store(nStore).C(i)) = nStore;  %% the new added component is at the end of the list
+            %% fprintf('add new edge %d %d with lambda = %d', Edge_chosn.i, Edge_chosn.j, Comp(nComp).lambda); 
+            for i=1:length(Comp(nComp).C)
+                %{
+                %% update the marks 
+                if VertexMark(Comp(nComp).C(i)) > 0
+                    VertexMark(Comp(nComp).C(i)) = Comp(nComp).Id;
+                end
+                %}
+                VertexBelong(Comp(nComp).C(i)) = nComp;  %% the new added component is at the end of the list
             end
             
             %% update the vertex belong
-            for i=1:length(Store)
-                for j=1:length(Store(i).C)
-                    B(Store(i).C(j)) = i;
-                    if ( Store(i).C(j) ) == r
-                        RootStore = i;
+            for i=1:length(Comp)
+                for j=1:length(Comp(i).C)
+                    VertexBelong(Comp(i).C(j)) = i;
+                    if ( Comp(i).C(j) ) == r
+                        RootComp = i;
                     end
                 end
             end
@@ -163,7 +181,7 @@ function [T,X,score] = InitSol()
      % remove the edges!
      rm = [];
      for i = 1:length(F)
-         if ( B(F(i).i) ~= RootStore && B(F(i).j) ~= RootStore )
+         if ( VertexBelong(F(i).i) ~= RootComp && VertexBelong(F(i).j) ~= RootComp )
              rm = [rm i];
          end
      end
@@ -206,13 +224,29 @@ function [T,X,score] = InitSol()
      end
      
      
-     MapV = zeros(1,length(Prize)); %% Map(i) is the index of Vertex i in the tree T.V; 
+     MapV = zeros(1,length(Prize)); %% Map(i) is the index of Vertex i in the tree T.V;  MapV( T.V(i).id ) = i;
      for i = 1:length(T.V)
         MapV(T.V(i).id) = i; 
      end
      
      
-   
+     %% After some research, I found that we do not need the strong prune in this example
+     %% Now we use a recurion method SPT (strong prune tree) to remove as much as edges in T to get the final answers
+     %{
+      %% Strong prone tree. But currently we do not need it.
+     T = SPT(T,G, MapV(T.V(1).id), MapV);
+     
+     rm = [];
+     for i = 1: length(T.V)
+         if T.V(i).done == 3
+             rm = [rm i];
+         end
+     end
+     
+     T.V(rm) = [];
+     
+     %}
+     
      score = 0;
      for i = 1:length(T.V)
          T.V(i).r = Prize(T.V(i).id);
@@ -223,6 +257,6 @@ function [T,X,score] = InitSol()
          score = score - T.E(i).cost;
      end
      
-     T.score = score;
-     X= vt';
+     T.score = score; 
+     X = vt';
      display(X);
