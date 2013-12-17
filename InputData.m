@@ -1,6 +1,6 @@
 %reads the input file
 %author : Preethi Issac
-function [G,Prize] = InputData(inputfile)
+function [G,Prize] = InputData(content)
 content = fileread( inputfile ) ;
  % - Extract graph information.
  pattern    = 'Nodes\s+(?<nodes>\d+)\s+Edges\s+(?<edges>\d+)\s+(?<data>.*)SEC' ;
