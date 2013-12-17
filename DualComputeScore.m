@@ -46,11 +46,13 @@ function c = DualComputeScore(X)
 	cost_tree = sum(nonzeros(tree));
 	penalti = 0;
 	for i = 1:length(Prize)
-	    if(any(X ~= i))
-		penalti = penalti + Prize(i);
+	    if(any(X == i))
+            continue;
+        else
+            penalti = penalti + Prize(i);
 	    end
 	end
-	c = profit + cost_tree;
+	c = penalti + cost_tree;
     else 
 	%if G1 is not connected X is not feasible!
 	c = inf;

@@ -26,11 +26,12 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     	   -1  3 -1 -1  2 -1  1;
     	   -1 -1 -1 -1 -1  1 -1;];  
 
-        Prize = [100 0 0 4 100 0 100];
+        Prize = [100 0 0 0 0 0 100];
+    
     %}
-
-    r	      = 157;  % root node
     [G,Prize] = InputData(inputfile);
+    [maxp, maxi] = max(Prize); 
+    r	      = maxi;	%root node is the node with max prize
 
     assert(isequal(G, G'), 'Not an undirected graph');
  
@@ -44,53 +45,22 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     %%initial sol
     
     tic;
-    %    bestscore = 0;
-    %    bestr = 292;
-    %  for r = 1 : length(Prize)
-    %	if(Prize(r) == 0)
-    %	    continue;
-    %	end
     [T, X, scoreX] = InitSol();
-    %	if (bestscore < scoreX)
-    %	    bestscore = scoreX;
-    %	    bestX = X;
-    %	    bestr = r;
-    %	end
-    %    end
-    %    r = bestr;
-    %    X = bestX;
-    %    scoreX = bestscore;
-
     initTime = toc;
     dualX = DualComputeScore(X);
     display(X);
     display(scoreX);
-    %display(T);
-
-    %%local search 
-    %{
-    localfile = strcat(inputfile, 'local.txt');
-    lf = fopen(localfile, 'w');
-    tic;
-    [Y, scoreY] = LocalSearch(X, scoreX);
-    localTime = toc;
-    dualY = DualComputeScore(Y);
-    fclose(lf);
-    display(Y);
-    display(scoreY);
-    %}
+    display(dualX);
 
     %%Simulated Annealing starting with 0.5-approx 
     % set up parameters
-    
+
     GenProb = 0.8;	    % probability with a neighbor is genereted in GenerateNeighbor function
     TMax    = 1000000;	    % cooling schedule initial temp
     Alpha   = 0.9;	    % t = Alpha * t 
     EMin    = 1.8 * scoreX; % and hoping for a 0.9-approx 
-    EMin    = 50;	    % and hoping for a 0.9-approx 
-    TMin    = TMax * ( Alpha^length(G) );	    % final temp or set dynamically to run at least n iterations.
+    TMin    = TMax * ( Alpha^(length(G)) );	    % final temp or set dynamically to run at least n iterations.
 
-    %X = find(Prize);
     nX = union(X, r);
     scorenX = ComputeScore(nX);
     tic;
@@ -101,10 +71,24 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     display(scoreZ);
     display(dualZ);
 
+    %%local search 
+
+    localfile = strcat(inputfile, 'local.txt');
+    lf = fopen(localfile, 'w');
+    tic;
+    [Y, scoreY] = LocalSearch(X, scoreX);
+    localTime = toc;
+    dualY = DualComputeScore(Y);
+    fclose(lf);
+    display(Y);
+    display(scoreY);
+    display(dualY);
+
+
     fileid = fopen(outputfile, 'a+');
-    fprintf(fileid, '%s %d (%d)  %d (%d)  %g  %g\n', inputfile, scoreX, dualX, scoreZ, dualZ,  initTime, simTime);
-    % fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
+    %fprintf(fileid, '%s %d (%d)  %d (%d)  %g  %g\n', inputfile, scoreX, dualX, scoreZ, dualZ,  initTime, simTime);
+    fprintf(fileid, '%s %d (%d)  %d--%d (%d) %d (%d)  %g %g %g\n', inputfile, scoreX, dualX, scoreY, count, dualY, scoreZ, dualZ,  initTime, localTime, simTime);
     fclose(fileid);
-   % exit;
-   %}
+    exit;
+    %}
 end
