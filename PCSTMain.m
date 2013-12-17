@@ -91,10 +91,10 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
     TMin    = TMax * ( Alpha^length(G) );	    % final temp or set dynamically to run at least n iterations.
 
     %X = find(Prize);
-    X = union(X, r);
-    scoreX = ComputeScore(X);
+    nX = union(X, r);
+    scorenX = ComputeScore(nX);
     tic;
-    [Z, scoreZ] = SimulatedAnnealing(X, scoreX); 
+    [Z, scoreZ] = SimulatedAnnealing(nX, scorenX); 
     simTime = toc;
     dualZ = DualComputeScore(Z);
     display(Z);
