@@ -13,7 +13,7 @@ function [T,X,score] = InitSol()
     global G;
     global Prize;
     global r;
-      F = []; %% A tree
+  F = []; %% A tree
      Comp(length(Prize)).C = []; %% set of components
      Comp(length(Prize)).w = 0;
      Comp(length(Prize)).lambda = 1;
@@ -184,6 +184,7 @@ function [T,X,score] = InitSol()
          if ( VertexBelong(F(i).i) ~= RootComp && VertexBelong(F(i).j) ~= RootComp )
              rm = [rm i];
          end
+          
      end
      F(rm) = [];
      
@@ -246,8 +247,13 @@ function [T,X,score] = InitSol()
      T.V(rm) = [];
      
      %}
-     
-     score = 0;
+ 
+         
+     k = find(Prize);
+   
+    
+        
+score = 0;
      for i = 1:length(T.V)
          T.V(i).r = Prize(T.V(i).id);
          score = score + Prize(T.V(i).id);
@@ -256,7 +262,13 @@ function [T,X,score] = InitSol()
      for i = 1:length(T.E)         
          score = score - T.E(i).cost;
      end
-     
+  
      T.score = score; 
+     if T.score == 0
+     score = Prize(r);
+     T.score = score; 
+      vt = r;
+     T.V(1).id  = [r];
+     end  
      X = vt';
      display(X);
