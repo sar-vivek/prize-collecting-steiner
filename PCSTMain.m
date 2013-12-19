@@ -35,13 +35,6 @@ function [scoreX, scoreY, scoreZ] = PCSTMain(inputfile, outputfile)
 
     assert(isequal(G, G'), 'Not an undirected graph');
  
-    %{
-    X = [1 2];
-    display(X);
-    xc = ComputeScore(X);
-    display(xc);
-    %}
-
     %%initial sol
     
     tic;
